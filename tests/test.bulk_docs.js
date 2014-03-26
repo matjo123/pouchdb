@@ -307,6 +307,7 @@ adapters.map(function (adapter) {
     it('handles simultaneous writes', function (done) {
       var db1 = new PouchDB(dbs.name);
       var db2 = new PouchDB(dbs.name);
+      var db3 = new PouchDB(dbs.name);
       var id = 'fooId';
       var errorNames = [];
       var ids = [];
@@ -318,15 +319,15 @@ adapters.map(function (adapter) {
         } else {
           ids.push(res[0].id);
         }
-        console.log(res);
-        if (++numDone === 2) {
+        if (++numDone === 3) {
           errorNames.should.deep.equal(['conflict']);
-          ids.should.deep.equal([id]);
+          ids.sort().should.deep.equal(['fooId', 'otherId']);
           done();
         }
       }
       db1.bulkDocs({docs : [{_id : id}]}, callback);
       db2.bulkDocs({docs : [{_id : id}]}, callback);
+      db3.bulkDocs({docs : [{_id : 'otherId'}]}, callback);
     });
 
   });
