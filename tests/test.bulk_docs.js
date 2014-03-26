@@ -305,7 +305,8 @@ adapters.map(function (adapter) {
     });
 
     it('handles simultaneous writes', function (done) {
-      var db = new PouchDB(dbs.name);
+      var db1 = new PouchDB(dbs.name);
+      var db2 = new PouchDB(dbs.name);
       var id = 'fooId';
       var errorNames = [];
       var ids = [];
@@ -324,8 +325,8 @@ adapters.map(function (adapter) {
           done();
         }
       }
-      db.bulkDocs({docs : [{_id : id}]}, callback);
-      db.bulkDocs({docs : [{_id : id}]}, callback);
+      db1.bulkDocs({docs : [{_id : id}]}, callback);
+      db2.bulkDocs({docs : [{_id : id}]}, callback);
     });
 
   });
